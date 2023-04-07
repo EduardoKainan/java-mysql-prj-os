@@ -28,14 +28,16 @@ public class TelaLogin extends javax.swing.JFrame {
             //Pega os dados dos campos da tela de login
             pst = conexao.prepareStatement(sql);
             pst.setString(1,txtUsuario.getText());
-            pst.setString(2,txtSenha.getText());
+            String captura = new String(txtSenha.getPassword());
+            pst.setString(2,captura);
             //exxecuta a consulta
             rs=pst.executeQuery();
             
             if(rs.next()){
                 TelaPrincipal principal = new TelaPrincipal();
                 principal.setVisible(true);
-                
+                this.dispose();
+                conexao.close();
             }else{
                 JOptionPane.showConfirmDialog(null, "Usuario ou Senha invalida");
             }

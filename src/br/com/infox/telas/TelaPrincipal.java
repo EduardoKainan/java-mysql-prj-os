@@ -5,6 +5,10 @@
  */
 package br.com.infox.telas;
 
+import java.text.DateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Eduardo
@@ -27,31 +31,174 @@ public class TelaPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Desktop = new javax.swing.JDesktopPane();
         jLabel1 = new javax.swing.JLabel();
+        lblData = new javax.swing.JLabel();
+        lblUsuario = new javax.swing.JLabel();
+        Menu = new javax.swing.JMenuBar();
+        mnCadastro = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        mnOS = new javax.swing.JMenuItem();
+        mnUsuarios = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        mnRelatorio = new javax.swing.JMenuItem();
+        mnHelp = new javax.swing.JMenu();
+        mnSobre = new javax.swing.JMenuItem();
+        mnOpcoes = new javax.swing.JMenu();
+        mnSair = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Gugu - Sistema Para Cntrole de Ordem de Serviços");
+        setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
-        jLabel1.setText("SEJA BEM VINDO!");
+        javax.swing.GroupLayout DesktopLayout = new javax.swing.GroupLayout(Desktop);
+        Desktop.setLayout(DesktopLayout);
+        DesktopLayout.setHorizontalGroup(
+            DesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 517, Short.MAX_VALUE)
+        );
+        DesktopLayout.setVerticalGroup(
+            DesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infox/telas/suporte-tecnico (2).png"))); // NOI18N
+
+        lblData.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        lblData.setText("Data");
+
+        lblUsuario.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        lblUsuario.setText("Usuario");
+
+        mnCadastro.setText("Cadastro");
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK));
+        jMenuItem1.setText("Cliente");
+        mnCadastro.add(jMenuItem1);
+
+        mnOS.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.ALT_MASK));
+        mnOS.setText("OS");
+        mnOS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnOSActionPerformed(evt);
+            }
+        });
+        mnCadastro.add(mnOS);
+
+        mnUsuarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK));
+        mnUsuarios.setText("Usuarios");
+        mnCadastro.add(mnUsuarios);
+
+        Menu.add(mnCadastro);
+
+        jMenu2.setText("Relatorio");
+
+        mnRelatorio.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK));
+        mnRelatorio.setText("Seviços");
+        jMenu2.add(mnRelatorio);
+
+        Menu.add(jMenu2);
+
+        mnHelp.setText("Ajuda");
+
+        mnSobre.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
+        mnSobre.setText("Sobre");
+        mnSobre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnSobreActionPerformed(evt);
+            }
+        });
+        mnHelp.add(mnSobre);
+
+        Menu.add(mnHelp);
+
+        mnOpcoes.setText("Opções");
+
+        mnSair.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
+        mnSair.setText("Sair");
+        mnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnSairActionPerformed(evt);
+            }
+        });
+        mnOpcoes.add(mnSair);
+
+        Menu.add(mnOpcoes);
+
+        setJMenuBar(Menu);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(143, 143, 143)
-                .addComponent(jLabel1)
-                .addContainerGap(170, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(Desktop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblUsuario)
+                            .addComponent(lblData))
+                        .addContainerGap(120, Short.MAX_VALUE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(131, 131, 131)
-                .addComponent(jLabel1)
-                .addContainerGap(154, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(Desktop))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(77, 77, 77)
+                        .addComponent(lblUsuario)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblData)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                        .addComponent(jLabel1)))
+                .addContainerGap())
         );
 
-        pack();
+        setSize(new java.awt.Dimension(750, 508));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void mnOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnOSActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mnOSActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // Atualiza a label lbbData pela data atual do sistema 
+        
+        Date data = new Date();
+        DateFormat formatador =  DateFormat.getDateInstance(DateFormat.SHORT);
+      
+        lblData.setText(formatador.format(data));
+       
+        
+    }//GEN-LAST:event_formWindowActivated
+
+    private void mnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnSairActionPerformed
+        // configura botao sair com caixa de confirmação
+        int sair = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja sair?","Atenção", JOptionPane.YES_NO_OPTION);
+        
+        if (sair == JOptionPane.YES_OPTION){
+            System.exit(0);
+        }
+    }//GEN-LAST:event_mnSairActionPerformed
+
+    private void mnSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnSobreActionPerformed
+        // chamando a tela sobre
+        
+        TelaSobre sobre = new TelaSobre();
+        sobre.setVisible(true);
+    }//GEN-LAST:event_mnSobreActionPerformed
 
     /**
      * @param args the command line arguments
@@ -90,6 +237,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDesktopPane Desktop;
+    private javax.swing.JMenuBar Menu;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JLabel lblData;
+    private javax.swing.JLabel lblUsuario;
+    private javax.swing.JMenu mnCadastro;
+    private javax.swing.JMenu mnHelp;
+    private javax.swing.JMenuItem mnOS;
+    private javax.swing.JMenu mnOpcoes;
+    private javax.swing.JMenuItem mnRelatorio;
+    private javax.swing.JMenuItem mnSair;
+    private javax.swing.JMenuItem mnSobre;
+    private javax.swing.JMenuItem mnUsuarios;
     // End of variables declaration//GEN-END:variables
 }
