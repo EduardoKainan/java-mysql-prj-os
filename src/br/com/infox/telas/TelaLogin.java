@@ -16,14 +16,14 @@ import javax.swing.JOptionPane;
  * @author Eduardo
  */
 public class TelaLogin extends javax.swing.JFrame {
-    Connection conexao = null;
-    PreparedStatement pst = null;
-    ResultSet rs = null;
+    Connection conexao ;
+    PreparedStatement pst ;
+    ResultSet rs ;
     /**
      * Creates new form TelaLogin
      * */
     public void logar(){
-        String sql="select*from tbusuarios where login=? and senha=?";
+        String sql = "select * from tbusuarios where login = ? and senha = ?";
         try {
             //Pega os dados dos campos da tela de login
             pst = conexao.prepareStatement(sql);
@@ -34,17 +34,29 @@ public class TelaLogin extends javax.swing.JFrame {
             rs=pst.executeQuery();
             
             if(rs.next()){
-                TelaPrincipal principal = new TelaPrincipal();
-                principal.setVisible(true);
-                this.dispose();
-                conexao.close();
+                String perfil = rs.getString(6);
+               // System.out.println(perfil);
+               if(perfil.equals("admin")){
+                    TelaPrincipal principal = new TelaPrincipal();
+                    principal.setVisible(true);
+                    TelaPrincipal.mnRel.setEnabled(true);
+                    TelaPrincipal.mnUsuarios.setEnabled(true);
+                    TelaPrincipal.lblUsuario.setText(rs.getString(2));
+                   this.dispose();
+               }else{
+                    TelaPrincipal principal = new TelaPrincipal();
+                    principal.setVisible(true);
+                    this.dispose();
+
+               }
             }else{
                 JOptionPane.showConfirmDialog(null, "Usuario ou Senha invalida");
+            
             }
-
         } catch (Exception e) {
         }
     }
+    
     
     public TelaLogin() {
         initComponents();
