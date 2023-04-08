@@ -15,7 +15,7 @@ import java.sql.DriverManager;
 public class ModuloConexao {
     
     public static Connection conector() {
-        java.sql.Connection conexao = null;
+        Connection conexao;
         String driver = "com.mysql.cj.jdbc.Driver";
         String url = "jdbc:mysql://localhost:3306/dbinfox";
         String user = "root";

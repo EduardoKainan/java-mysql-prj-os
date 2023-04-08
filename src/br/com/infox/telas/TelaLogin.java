@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package br.com.infox.telas;
-
+import java.sql.*;
 import br.com.infox.dal.ModuloConexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,29 +19,44 @@ public class TelaLogin extends javax.swing.JFrame {
     Connection conexao ;
     PreparedStatement pst ;
     ResultSet rs ;
+    
+    
+    
+      public TelaLogin() {
+        conexao = ModuloConexao.conector();
+        initComponents();
+
+    }
     /**
      * Creates new form TelaLogin
      * */
+    
+    
     public void logar(){
         String sql = "select * from tbusuarios where login = ? and senha = ?";
         try {
-            //Pega os dados dos campos da tela de login
+            
+           //Pega os dados dos campos da tela de login
+
+
             pst = conexao.prepareStatement(sql);
             pst.setString(1,txtUsuario.getText());
             String captura = new String(txtSenha.getPassword());
             pst.setString(2,captura);
             //exxecuta a consulta
-            rs=pst.executeQuery();
+            rs = pst.executeQuery();
             
             if(rs.next()){
                 String perfil = rs.getString(6);
                // System.out.println(perfil);
                if(perfil.equals("admin")){
-                    TelaPrincipal principal = new TelaPrincipal();
-                    principal.setVisible(true);
-                    TelaPrincipal.mnRel.setEnabled(true);
-                    TelaPrincipal.mnUsuarios.setEnabled(true);
-                    TelaPrincipal.lblUsuario.setText(rs.getString(2));
+                   TelaPrincipal principal = new TelaPrincipal();
+                   TelaSobre sobre = new TelaSobre();
+                   sobre.setVisible(true);
+                   principal.setVisible(true);
+                   TelaPrincipal.mnRel.setEnabled(true);
+                   TelaPrincipal.mnUsuarios.setEnabled(true);
+                   TelaPrincipal.lblUsuario.setText(rs.getString(2));
                    this.dispose();
                }else{
                     TelaPrincipal principal = new TelaPrincipal();
@@ -58,14 +73,7 @@ public class TelaLogin extends javax.swing.JFrame {
     }
     
     
-    public TelaLogin() {
-        initComponents();
-        conexao = ModuloConexao.conector();
-        System.out.println(conexao);
-        
-        
-       
-    }
+  
 
     /**
      * This method is called from within the constructor to initialize the form.

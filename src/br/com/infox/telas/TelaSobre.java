@@ -5,17 +5,19 @@
  */
 package br.com.infox.telas;
 
+import java.sql.Connection;
+
 /**
  *
  * @author Eduardo
  */
 public class TelaSobre extends javax.swing.JFrame {
-
+    Connection conexão;
     /**
      * Creates new form TelaSobre
      */
     public TelaSobre() {
-        initComponents();
+       initComponents();
     }
 
     /**
@@ -41,8 +43,6 @@ public class TelaSobre extends javax.swing.JFrame {
         jLabel2.setText("Desenvolvido por Eduardo Kainan");
 
         jLabel3.setText("Sob a licença GPL");
-
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infox/telas/getting-started_about_license_gnu-logo.png"))); // NOI18N
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infox/icones/getting-started_about_license_gnu-logo_1.png"))); // NOI18N
 

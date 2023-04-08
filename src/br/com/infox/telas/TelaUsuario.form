@@ -136,9 +136,9 @@
               </Group>
               <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="103" groupAlignment="3" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="btnUserDelete" linkSize="2" alignment="1" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnUserCreate" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnUserCreate" linkSize="2" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="btnUserUpgrade" min="-2" max="-2" attributes="0"/>
                   <Component id="btnUserRead" min="-2" max="-2" attributes="0"/>
