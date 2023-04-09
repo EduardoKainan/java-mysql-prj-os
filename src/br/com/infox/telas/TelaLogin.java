@@ -51,8 +51,6 @@ public class TelaLogin extends javax.swing.JFrame {
                // System.out.println(perfil);
                if(perfil.equals("admin")){
                    TelaPrincipal principal = new TelaPrincipal();
-                   TelaSobre sobre = new TelaSobre();
-                   sobre.setVisible(true);
                    principal.setVisible(true);
                    TelaPrincipal.mnRel.setEnabled(true);
                    TelaPrincipal.mnUsuarios.setEnabled(true);

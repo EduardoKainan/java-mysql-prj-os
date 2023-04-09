@@ -5,17 +5,57 @@
  */
 package br.com.infox.telas;
 
+import br.com.infox.dal.ModuloConexao;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Eduardo
  */
 public class TelaUsuario extends javax.swing.JInternalFrame {
-
-    /**
-     * Creates new form TelaUsuario
-     */
+    
+     Connection conexao ;
+     PreparedStatement pst ;
+     ResultSet rs ;
+    
+    
     public TelaUsuario() {
+        //Construtor da classe, aonde renderiza os componentes do formulario;
         initComponents();
+        conexao = ModuloConexao.conector();
+        
+       
+    }
+    
+    
+    private void consultar(){
+        
+        String sql = "select * from tbusuarios where iduser=?";
+                
+        try {
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1,txtUserId.getText());
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                txtUserNome.setText(rs.getString(2));
+                txtUserFone.setText(rs.getString(3));
+                txtUserLogin.setText(rs.getString(4));
+                txtUserSenha.setText(rs.getString(5));
+                cbxUserPerfil.setSelectedItem(rs.getString(6));
+            } else {
+                JOptionPane.showMessageDialog(null, "Usuario não cadastrado");
+                txtUserNome.setText(null);
+                txtUserFone.setText(null);
+                txtUserLogin.setText(null);
+                txtUserSenha.setText(null);
+                cbxUserPerfil.setSelectedItem(null);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }
 
     /**
@@ -54,7 +94,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setTitle("Usuarios");
-        setPreferredSize(new java.awt.Dimension(640, 480));
+        setPreferredSize(new java.awt.Dimension(660, 445));
 
         jLabel1.setText("Id");
 
@@ -263,6 +303,8 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
 
     private void btnUserReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserReadActionPerformed
         // TODO add your handling code here:
+       
+        consultar();
     }//GEN-LAST:event_btnUserReadActionPerformed
 
     private void btnUserDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserDeleteActionPerformed
