@@ -16,28 +16,25 @@ import javax.swing.JOptionPane;
  * @author Eduardo
  */
 public class TelaUsuario extends javax.swing.JInternalFrame {
-    
-     Connection conexao ;
-     PreparedStatement pst ;
-     ResultSet rs ;
-    
-    
+
+    Connection conexao;
+    PreparedStatement pst;
+    ResultSet rs;
+
     public TelaUsuario() {
         //Construtor da classe, aonde renderiza os componentes do formulario;
         initComponents();
         conexao = ModuloConexao.conector();
-        
-       
+
     }
-    
-    
-    private void consultar(){
-        
+
+    private void consultar() {
+
         String sql = "select * from tbusuarios where iduser=?";
-                
+
         try {
             pst = conexao.prepareStatement(sql);
-            pst.setString(1,txtUserId.getText());
+            pst.setString(1, txtUserId.getText());
             rs = pst.executeQuery();
             if (rs.next()) {
                 txtUserNome.setText(rs.getString(2));
@@ -51,11 +48,106 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
                 txtUserFone.setText(null);
                 txtUserLogin.setText(null);
                 txtUserSenha.setText(null);
-                cbxUserPerfil.setSelectedItem(null);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
+    }
+
+    private void adicionar() {
+
+        String sql = "insert into tbusuarios (iduser,usuario,fone,login,senha,perfil) values (?,?,?,?,?,?)";
+        try {
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, txtUserId.getText());
+            pst.setString(2, txtUserNome.getText());
+            pst.setString(3, txtUserFone.getText());
+            pst.setString(4, txtUserLogin.getText());
+            pst.setString(5, txtUserSenha.getText());
+            pst.setString(6, cbxUserPerfil.getSelectedItem().toString());
+
+            if ((txtUserId.getText().isEmpty()) || (txtUserNome.getText().isEmpty()) || (txtUserLogin.getText().isEmpty()) || (txtUserSenha.getText().isEmpty())) {
+                JOptionPane.showMessageDialog(null, "Preencha os campos obrigatorios!");
+
+            } else {
+
+                int adicionado = pst.executeUpdate();
+
+                if (adicionado > 0) {
+                    JOptionPane.showMessageDialog(null, "usuario adicionado com sucesso!");
+                    txtUserId.setText(null);
+                    txtUserNome.setText(null);
+                    txtUserFone.setText(null);
+                    txtUserLogin.setText(null);
+                    txtUserSenha.setText(null);
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+
+        }
+    }
+
+    private void alterar() {
+
+        String sql = "update tbusuarios set usuario=?, fone=?, login=?, senha=?, perfil=? where iduser = ?";
+        try {
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, txtUserNome.getText());
+            pst.setString(2, txtUserFone.getText());
+            pst.setString(3, txtUserLogin.getText());
+            pst.setString(4, txtUserSenha.getText());
+            pst.setString(5, cbxUserPerfil.getSelectedItem().toString());
+            pst.setString(6, txtUserId.getText());
+
+            if ((txtUserId.getText().isEmpty()) || (txtUserNome.getText().isEmpty()) || (txtUserLogin.getText().isEmpty()) || (txtUserSenha.getText().isEmpty())) {
+                JOptionPane.showMessageDialog(null, "Preencha os campos obrigatorios!");
+
+            } else {
+
+                int adicionado = pst.executeUpdate();
+
+                if (adicionado > 0) {
+                    JOptionPane.showMessageDialog(null, "Dados atualizados com sucesso!");
+                    txtUserId.setText(null);
+                    txtUserNome.setText(null);
+                    txtUserFone.setText(null);
+                    txtUserLogin.setText(null);
+                    txtUserSenha.setText(null);
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+    }
+
+    private void remover() {
+        int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que desejar remover este usuario?", "ATENÇÃO", JOptionPane.YES_NO_OPTION);
+        if (confirma == JOptionPane.YES_OPTION) {
+            String sql = "delete from tbusuarios where iduser=?";
+          
+            try {
+                pst = conexao.prepareStatement(sql);
+                pst.setString(1,txtUserId.getText());
+                int apagado = pst.executeUpdate();
+                if(apagado > 0){ 
+                    
+                    
+                    JOptionPane.showMessageDialog(null, "Usuario removido com sucesso.");                
+                    
+                    txtUserId.setText(null);
+                    txtUserNome.setText(null);
+                    txtUserFone.setText(null);
+                    txtUserLogin.setText(null);
+                    txtUserSenha.setText(null);
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+ 
+        }
+
     }
 
     /**
@@ -85,6 +177,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         btnUserDelete = new javax.swing.JButton();
         btnUserUpgrade = new javax.swing.JButton();
         btnUserRead = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -96,15 +189,15 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         setTitle("Usuarios");
         setPreferredSize(new java.awt.Dimension(660, 445));
 
-        jLabel1.setText("Id");
+        jLabel1.setText("Id*");
 
-        jLabel2.setText("Nome");
+        jLabel2.setText("Nome*");
 
         jLabel3.setText("Fone");
 
-        jLabel4.setText("Senha");
+        jLabel4.setText("Senha*");
 
-        jLabel5.setText("Perfil");
+        jLabel5.setText("Perfil*");
 
         txtUserId.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -137,7 +230,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel6.setText("Login");
+        jLabel6.setText("Login*");
 
         txtUserLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -182,6 +275,8 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel7.setText("*Campos Obrigatorios");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -225,7 +320,8 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
                                         .addGap(0, 0, Short.MAX_VALUE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txtUserId, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel7)))))
                 .addGap(190, 190, 190))
         );
 
@@ -237,7 +333,8 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
                 .addGap(64, 64, 64)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtUserId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtUserId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -295,20 +392,23 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
 
     private void btnUserCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserCreateActionPerformed
         // TODO add your handling code here:
+        adicionar();
     }//GEN-LAST:event_btnUserCreateActionPerformed
 
     private void btnUserUpgradeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserUpgradeActionPerformed
         // TODO add your handling code here:
+        alterar();
     }//GEN-LAST:event_btnUserUpgradeActionPerformed
 
     private void btnUserReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserReadActionPerformed
         // TODO add your handling code here:
-       
+
         consultar();
     }//GEN-LAST:event_btnUserReadActionPerformed
 
     private void btnUserDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserDeleteActionPerformed
         // TODO add your handling code here:
+        remover();
     }//GEN-LAST:event_btnUserDeleteActionPerformed
 
 
@@ -324,6 +424,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField txtUserFone;
