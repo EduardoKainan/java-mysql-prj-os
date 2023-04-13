@@ -44,10 +44,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
                 cbxUserPerfil.setSelectedItem(rs.getString(6));
             } else {
                 JOptionPane.showMessageDialog(null, "Usuario não cadastrado");
-                txtUserNome.setText(null);
-                txtUserFone.setText(null);
-                txtUserLogin.setText(null);
-                txtUserSenha.setText(null);
+                limpar();
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
@@ -75,11 +72,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
 
                 if (adicionado > 0) {
                     JOptionPane.showMessageDialog(null, "usuario adicionado com sucesso!");
-                    txtUserId.setText(null);
-                    txtUserNome.setText(null);
-                    txtUserFone.setText(null);
-                    txtUserLogin.setText(null);
-                    txtUserSenha.setText(null);
+                    limpar();
                 }
             }
         } catch (Exception e) {
@@ -109,11 +102,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
 
                 if (adicionado > 0) {
                     JOptionPane.showMessageDialog(null, "Dados atualizados com sucesso!");
-                    txtUserId.setText(null);
-                    txtUserNome.setText(null);
-                    txtUserFone.setText(null);
-                    txtUserLogin.setText(null);
-                    txtUserSenha.setText(null);
+                    limpar();
                 }
             }
         } catch (Exception e) {
@@ -126,28 +115,31 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que desejar remover este usuario?", "ATENÇÃO", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
             String sql = "delete from tbusuarios where iduser=?";
-          
+
             try {
                 pst = conexao.prepareStatement(sql);
-                pst.setString(1,txtUserId.getText());
+                pst.setString(1, txtUserId.getText());
                 int apagado = pst.executeUpdate();
-                if(apagado > 0){ 
-                    
-                    
-                    JOptionPane.showMessageDialog(null, "Usuario removido com sucesso.");                
-                    
-                    txtUserId.setText(null);
-                    txtUserNome.setText(null);
-                    txtUserFone.setText(null);
-                    txtUserLogin.setText(null);
-                    txtUserSenha.setText(null);
+                if (apagado > 0) {
+
+                    JOptionPane.showMessageDialog(null, "Usuario removido com sucesso.");
+
+                    limpar();
                 }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e);
             }
- 
+
         }
 
+    }
+
+    private void limpar() {
+        txtUserId.setText(null);
+        txtUserNome.setText(null);
+        txtUserFone.setText(null);
+        txtUserLogin.setText(null);
+        txtUserSenha.setText(null);
     }
 
     /**
