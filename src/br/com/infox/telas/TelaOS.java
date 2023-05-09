@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -79,21 +80,16 @@ public class TelaOS extends javax.swing.JInternalFrame {
             pst.setString(8, txtCliId.getText());
 
             //Validação dos campos obrigadotiros
-            if ((txtCliId.getText().isEmpty()) || (txtOsEquip.getText().isEmpty()) || (txtOsDef.getText().isEmpty())) {
+            if ((txtCliId.getText().isEmpty()) || (txtOsEquip.getText().isEmpty()) || (txtOsDef.getText().isEmpty()) || cboOsSit.getSelectedItem().equals(" ")) {
                 JOptionPane.showMessageDialog(null, "Preencher campos obrigatorios");
             } else {
                 int adicionado = pst.executeUpdate();
 
                 if (adicionado > 0) {
                     JOptionPane.showMessageDialog(null, "OS emitida com sucesso!");
-
-                    txtCliId.setText(null);
-                    txtOsEquip.setText(null);
-                    txtOsDef.setText(null);
-                    txtOsSer.setText(null);
-                    txtOsTec.setText(null);
-                    txtOsValor.setText(null);
-
+                    btnOsAdd.setEnabled(false);
+                    btnOsPesquisar.setEnabled(false);
+                    btnOsImprimir.setEnabled(true);
                 }
             }
 
@@ -107,7 +103,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
     private void pesquisaOS() {
         //Criar caia de entrada do tipo JOptionPane 
         String numOs = JOptionPane.showInputDialog("Numeor da OS");
-        String sql = "select * from tbos where os = " + numOs;
+        String sql = "select os, date_format(data_os, '%d/%m/%Y - %H:%i'),tipo,situacao,equipamento,defeito,servico,tecnico,valor,idcli from tbos where os=" + numOs;
 
         try {
             pst = conexao.prepareStatement(sql);
@@ -126,18 +122,23 @@ public class TelaOS extends javax.swing.JInternalFrame {
                     rbtOrc.setSelected(true);
                     tipo = "Orçamento";
                 }
+
                 cboOsSit.setSelectedItem(rs.getString(4));
                 txtOsEquip.setText(rs.getString(5));
                 txtOsDef.setText(rs.getString(6));
+
                 txtOsSer.setText(rs.getString(7));
                 txtOsTec.setText(rs.getString(8));
                 txtOsValor.setText(rs.getString(9));
+                //replace subtirui , pelo .
                 txtCliId.setText(rs.getString(10));
-
-                //evitando problemas
+                
                 btnOsAdd.setEnabled(false);
-                txtCliPesquisar.setEnabled(false);
-                tblClientes.setVisible(false);
+                btnOsPesquisar.setEnabled(false);
+                txtCliId.setEnabled(false);
+                btnOsDelelete.setEnabled(true);
+                btnOsAtualizar.setEnabled(true);
+                btnOsImprimir.setEnabled(true);
 
             } else {
                 JOptionPane.showMessageDialog(null, "Os não cadastrada");
@@ -166,10 +167,10 @@ public class TelaOS extends javax.swing.JInternalFrame {
             pst.setString(6, txtOsTec.getText());
             pst.setString(7, txtOsValor.getText().replace(",", "."));
             //replace subtirui , pelo .
-            pst.setString(8, txtCliId.getText());
+            pst.setString(8, txtOs.getText());
 
             //Validação dos campos obrigadotiros
-            if ((txtCliId.getText().isEmpty()) || (txtOsEquip.getText().isEmpty()) || (txtOsDef.getText().isEmpty())) {
+            if ((txtCliId.getText().isEmpty()) || (txtOsEquip.getText().isEmpty()) || (txtOsDef.getText().isEmpty()) || (cboOsSit.getSelectedItem().equals(" "))) {
                 JOptionPane.showMessageDialog(null, "Preencher campos obrigatorios");
             } else {
                 int adicionado = pst.executeUpdate();
@@ -177,15 +178,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
                 if (adicionado > 0) {
                     JOptionPane.showMessageDialog(null, "OS alterada com sucesso com sucesso!");
 
-                    txtCliId.setText(null);
-                    txtOsEquip.setText(null);
-                    txtOsDef.setText(null);
-                    txtOsSer.setText(null);
-                    txtOsTec.setText(null);
-                    txtOsValor.setText(null);
-                    btnOsAdd.setEnabled(true);
-                    txtCliPesquisar.setEnabled(true);
-                    tblClientes.setVisible(true);
+                    limparCampos();
 
                 }
             }
@@ -207,22 +200,40 @@ public class TelaOS extends javax.swing.JInternalFrame {
                 int apagado = pst.executeUpdate();
                 if (apagado > 0) {
                     JOptionPane.showMessageDialog(null, "Os excluida com sucesso!");
-                    txtCliId.setText(null);
-                    txtData.setText(null);
-                    txtOs.setText(null);
-                    txtOsEquip.setText(null);
-                    txtOsDef.setText(null);
-                    txtOsSer.setText(null);
-                    txtOsTec.setText(null);
-                    txtOsValor.setText(null);
-                    btnOsAdd.setEnabled(true);
-                    txtCliPesquisar.setEnabled(true);
-                    tblClientes.setVisible(true);
+                    limparCampos();
                 }
             } catch (Exception e) {
             }
 
         }
+    }
+
+    private void limparCampos() {
+        
+        txtCliId.setText(null);
+        txtData.setText(null);
+        txtOs.setText(null);
+        txtOsEquip.setText(null);
+        txtOsDef.setText(null);
+        txtOsSer.setText(null);
+        txtOsTec.setText(null);
+        cboOsSit.setSelectedItem(" ");
+        txtOsValor.setText(null);
+        txtCliPesquisar.setText(null);
+        ((DefaultTableModel) tblClientes.getModel()).setRowCount(0);
+        
+        //habilitar botões
+        btnOsAdd.setEnabled(true);
+        btnOsPesquisar.setEnabled(true);
+        txtCliPesquisar.setEnabled(true);
+        tblClientes.setVisible(false);
+       //desabilitar botões
+
+        btnOsAtualizar.setEnabled(false);
+    
+        btnOsDelelete.setEnabled(false);
+        btnOsImprimir.setEnabled(false);
+
     }
 
     /**
@@ -365,7 +376,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        cboOsSit.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Na Bancada", "Entrega OK", "Orçamento REPROVADO\t", "Aguardando Aprovação", "Aguardando Peças", "Abandonado Pelo Cliente", "Retornou" }));
+        cboOsSit.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "Na Bancada", "Entrega OK", "Orçamento REPROVADO\t", "Aguardando Aprovação", "Aguardando Peças", "Abandonado Pelo Cliente", "Retornou" }));
 
         jLabel5.setText("Situação");
 
@@ -468,6 +479,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
         btnOsDelelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infox/icones/delete.png"))); // NOI18N
         btnOsDelelete.setToolTipText("Excluir");
         btnOsDelelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnOsDelelete.setEnabled(false);
         btnOsDelelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnOsDeleleteActionPerformed(evt);
@@ -495,6 +507,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
         btnOsAtualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infox/icones/update.png"))); // NOI18N
         btnOsAtualizar.setToolTipText("Atualizar");
         btnOsAtualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnOsAtualizar.setEnabled(false);
         btnOsAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnOsAtualizarActionPerformed(evt);
@@ -505,6 +518,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
         btnOsImprimir.setToolTipText("Imprimir");
         btnOsImprimir.setContentAreaFilled(false);
         btnOsImprimir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnOsImprimir.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

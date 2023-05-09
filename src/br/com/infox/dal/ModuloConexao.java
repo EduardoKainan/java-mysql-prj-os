@@ -17,8 +17,8 @@ public class ModuloConexao {
     public static Connection conector() {
         Connection conexao;
         String driver = "com.mysql.cj.jdbc.Driver";
-        String url = "jdbc:mysql://localhost:3306/dbinfox";
-        String user = "root";
+        String url = "jdbc:mysql://localhost:3306/dbinfox?characterEncoding=utf-8";
+        String user = "dba";
         String password = "kaynan1995";
         
         try {

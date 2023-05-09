@@ -5,6 +5,7 @@
  */
 package br.com.infox.telas;
 
+import br.com.infox.dal.ModuloConexao;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.Beans;
@@ -12,6 +13,9 @@ import java.sql.Connection;
 import java.text.DateFormat;
 import java.util.Date;
 import javax.swing.*;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -26,6 +30,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
      */
     public TelaPrincipal() {
         initComponents();
+        conexao = ModuloConexao.conector();
 
     }
 
@@ -50,6 +55,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         mnOS = new javax.swing.JMenuItem();
         mnUsuarios = new javax.swing.JMenuItem();
         mnRel = new javax.swing.JMenu();
+        menRelCli = new javax.swing.JMenuItem();
         mnRelatorio = new javax.swing.JMenuItem();
         mnHelp = new javax.swing.JMenu();
         mnSobre = new javax.swing.JMenuItem();
@@ -137,8 +143,22 @@ public class TelaPrincipal extends javax.swing.JFrame {
         mnRel.setText("Relatorio");
         mnRel.setEnabled(false);
 
+        menRelCli.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK));
+        menRelCli.setText("Clientes");
+        menRelCli.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menRelCliActionPerformed(evt);
+            }
+        });
+        mnRel.add(menRelCli);
+
         mnRelatorio.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK));
         mnRelatorio.setText("Seviços");
+        mnRelatorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnRelatorioActionPerformed(evt);
+            }
+        });
         mnRel.add(mnRelatorio);
 
         menu.add(mnRel);
@@ -255,10 +275,48 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_mnClienteActionPerformed
 
     private void mnCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnCadastroActionPerformed
-        // TODO add your handling code here:
-        
+        // TODO 
         
     }//GEN-LAST:event_mnCadastroActionPerformed
+
+    private void menRelCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menRelCliActionPerformed
+        // Gerando um relatorio de clientes
+        int confirma = JOptionPane.showConfirmDialog(null,"Deseja gerar o relatorio de clientes?","Atenção!", JOptionPane.YES_NO_OPTION);
+        
+        if(confirma == JOptionPane.YES_OPTION){
+            //imprimir relatorio com o framwork JasperReport
+            
+            try {
+                //usando a classe JasperPrint para preparara impressão de um relatorio
+                JasperPrint print = JasperFillManager.fillReport("C:\\reports\\clientes.jasper",null,conexao);
+                //A linha abaixo exibe o relatorio atraves da classe JasperView
+                JasperViewer.viewReport(print,false);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+               
+                
+        
+        }
+        
+    }//GEN-LAST:event_menRelCliActionPerformed
+
+    private void mnRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnRelatorioActionPerformed
+        // TODO add your handling code here:
+        int confirma = JOptionPane.showConfirmDialog(null, "Confirma a emissão do relatorio?", "Atenção", JOptionPane.YES_NO_OPTION);
+        
+        if(confirma == JOptionPane.YES_OPTION){
+        try {
+            
+            JasperPrint print = JasperFillManager.fillReport("C:\\reports\\servicos.jasper",null,conexao);
+            JasperViewer.viewReport(print,false);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,e);
+        }
+        
+            
+        }
+    }//GEN-LAST:event_mnRelatorioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -303,6 +361,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblData;
     public static javax.swing.JLabel lblUsuario;
+    private javax.swing.JMenuItem menRelCli;
     private javax.swing.JMenuBar menu;
     private javax.swing.JMenu mnCadastro;
     private javax.swing.JMenuItem mnCliente;
